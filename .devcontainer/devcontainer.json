@@ -1,0 +1,45 @@
+{
+    "name": "memes-google-f5-bigip-access-options",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+    "features": {
+        "ghcr.io/memes/devcontainers-features/direnv:1": {},
+        "ghcr.io/memes/devcontainers-features/google-cloud-cli:1": {},
+        "ghcr.io/memes/devcontainers-features/starship:1": {},
+        "ghcr.io/memes/devcontainers-features/talisman:1": {
+            "version": "1.37.0"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Gruntfuggly.todo-tree",
+                "ms-python.vscode-pylance",
+                "ms-python.python",
+                "ms-python.debugpy",
+                "ms-python.vscode-python-envs",
+                "redhat.vscode-yaml",
+                "streetsidesoftware.code-spell-checker",
+                "tamasfe.event-better-toml",
+                "esbenp.prettier-vscode",
+                "DavidAnson.vscode-markdownlint",
+                "charliermarsh.ruff"
+            ]
+        }
+    },
+    "onCreateCommand": {
+        "install-deps": "sudo sh -c 'apt update && apt install -y --no-install-recommends shellcheck && rm -rf /var/lib/apt/lists/*'",
+        "install-uv": ["/usr/local/py-utils/bin/pipx", "install", "uv"],
+        "modify-default-omz-plugins": ["/usr/bin/sed", "-i.onCreateCommand" , "-e", "/^plugins=/c\\plugins=(git dotenv)", "/home/vscode/.zshrc"]
+    },
+    "postCreateCommand": {
+        "uv-sync": "uv sync --link-mode=copy --all-extras --all-packages && uv run pre-commit install --hook-type commit-msg --hook-type pre-commit"
+    },
+    "containerUser": "vscode",
+    "containerEnv": {
+        "UV_LINK_MODE": "copy"
+    },
+    "updateRemoteUserUID": true,
+    "mounts": [
+        "source=${localEnv:HOME}/.config/gcloud,target=/home/vscode/.config/gcloud,type=bind,consistency=cached"
+    ]
+}

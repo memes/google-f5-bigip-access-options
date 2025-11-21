@@ -2,6 +2,12 @@
     "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
     "version": "0.2",
     "language": "en",
+    "ignorePaths": [
+        ".devcontainer/devcontainer.json",
+        ".gitignore",
+        ".pre-commit-config.yaml",
+        "uv.lock"
+    ],
     "words": [
         "direnv",
         "DOCKERHUB",
