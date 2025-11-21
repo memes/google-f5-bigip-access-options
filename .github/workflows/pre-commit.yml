@@ -8,7 +8,9 @@ name: pre-commit
 on:
   pull_request:
   push:
-    branches: [main]
+    branches-ignore:
+      - main
+
 permissions:
   contents: read
   pull-requests: read
@@ -19,18 +21,15 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: install talisman
-        run: |
-          sudo curl -sLo /usr/local/bin/talisman https://github.com/thoughtworks/talisman/releases/download/v1.30.0/talisman_linux_amd64
-          sudo chmod 0755 /usr/local/bin/talisman
-      - name: Install terraform-docs
-        run: |
-          sudo sh -c 'curl -sL https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz | tar xzf - -C /usr/local/bin'
-          sudo chmod 0755 /usr/local/bin/terraform-docs
-      - uses: ruby/setup-ruby@v1
+        uses: jaxxstorm/action-install-gh-release@v1
         with:
-          ruby-version: '3.0.5'
-          bundler-cache: true
+          repo: thoughtworks/talisman
+          extension-matching: disable
+          rename-to: talisman
+          chmod: 0755
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version-file: ".python-version"
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --locked --all-extras --dev
       - uses: pre-commit/action@v3.0.1
