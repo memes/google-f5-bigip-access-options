@@ -13,7 +13,7 @@ dependencies = [
     "pytest-cov>=7.0.0",
     "pytest-testinfra>=10.2.2",
     "pyyaml>=6.0.3",
-    "requests>=2.32.5",
+    "requests>=2.33.1",
 ]
 
 [dependency-groups]
